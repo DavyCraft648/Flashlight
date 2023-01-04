@@ -1,7 +1,7 @@
 name: Flashlight
 main: DavyCraft648\Flashlight\Main
 src-namespace-prefix: DavyCraft648\Flashlight
-version: 1.0.0
+version: 1.0.1
 api: [ 4.0.0, 5.0.0 ]
 depend:
   - Customies

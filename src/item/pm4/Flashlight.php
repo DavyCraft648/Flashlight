@@ -8,6 +8,7 @@ use pocketmine\math\Vector3;
 use pocketmine\player\Player;
 
 class Flashlight extends BaseFlashlight{
+	/** @noinspection PhpHierarchyChecksInspection */
 	public function onClickAir(Player $player, Vector3 $directionVector) : ItemUseResult{
 		return $this->switchMode($player);
 	}

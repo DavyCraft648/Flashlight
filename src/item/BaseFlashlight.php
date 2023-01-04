@@ -2,7 +2,6 @@
 
 namespace DavyCraft648\Flashlight\item;
 
-use customiesdevs\customies\item\component\AllowOffHandComponent;
 use customiesdevs\customies\item\CreativeInventoryInfo;
 use customiesdevs\customies\item\ItemComponentsTrait;
 use DavyCraft648\Flashlight\Main;
@@ -22,7 +21,7 @@ abstract class BaseFlashlight extends \pocketmine\item\Durable implements \custo
 		parent::__construct($identifier, $name);
 		$this->setUnbreakable(Main::getInstance()->getBehaviour() === Main::BEHAVIOUR_HORROR_2);
 		$this->initComponent("flashlight", new CreativeInventoryInfo(CreativeInventoryInfo::CATEGORY_EQUIPMENT));
-		$this->addComponent(new AllowOffHandComponent(true));
+		$this->allowOffHand();
 	}
 
 	public function getMaxDurability() : int{

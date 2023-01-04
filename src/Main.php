@@ -25,8 +25,12 @@ use pocketmine\inventory\Inventory;
 use pocketmine\inventory\PlayerInventory;
 use pocketmine\inventory\PlayerOffHandInventory;
 use pocketmine\item\VanillaItems;
+use pocketmine\resourcepacks\ZippedResourcePack;
 use pocketmine\scheduler\ClosureTask;
 use pocketmine\VersionInfo;
+use Symfony\Component\Filesystem\Path;
+use function array_merge;
+use function strtolower;
 
 final class Main extends \pocketmine\plugin\PluginBase{
 
@@ -52,6 +56,19 @@ final class Main extends \pocketmine\plugin\PluginBase{
 
 	protected function onLoad() : void{
 		self::$instance = $this;
+		$this->saveResource("FlashlightRP.mcpack");
+		$newPack = new ZippedResourcePack(Path::join($this->getDataFolder(), "FlashlightRP.mcpack"));
+		$rpManager = $this->getServer()->getResourcePackManager();
+		$resourcePacks = new \ReflectionProperty($rpManager, "resourcePacks");
+		$resourcePacks->setAccessible(true);
+		$resourcePacks->setValue($rpManager, array_merge($resourcePacks->getValue($rpManager), [$newPack]));
+		$uuidList = new \ReflectionProperty($rpManager, "uuidList");
+		$uuidList->setAccessible(true);
+		$uuidList->setValue($rpManager, $uuidList->getValue($rpManager) + [strtolower($newPack->getPackId()) => $newPack]);
+		$serverForceResources = new \ReflectionProperty($rpManager, "serverForceResources");
+		$serverForceResources->setAccessible(true);
+		$serverForceResources->setValue($rpManager, true);
+
 		$this->saveDefaultConfig();
 		$this->behaviour = match ($this->getConfig()->get("behaviour-mode")) {
 			"horror" => self::BEHAVIOUR_HORROR,

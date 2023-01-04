@@ -152,6 +152,7 @@ class Session{
 			if(!($block instanceof Air) && VersionInfo::BASE_VERSION[0] === "4"){
 				continue;
 			}
+			/** @noinspection PhpUndefinedMethodInspection */
 			$blocks[$hash = World::blockHash($vector3->x, $vector3->y, $vector3->z)] = isset($blocks[$hash]) ? ((VersionInfo::BASE_VERSION[0] === "5" ? $blocks[$hash]->getTypeId() : $blocks[$hash]->getId()) === (VersionInfo::BASE_VERSION[0] === "5" ? BlockTypeIds::AIR : BlockLegacyIds::AIR) ? (VersionInfo::BASE_VERSION[0] === "5" ? VanillaBlocks::LIGHT()->setLightLevel(12) : CustomiesBlockFactory::getInstance()->get("flashlight:light")) : $blocks[$hash]) : (VersionInfo::BASE_VERSION[0] === "5" ? VanillaBlocks::LIGHT()->setLightLevel(12) : CustomiesBlockFactory::getInstance()->get("flashlight:light"));
 		}
 
@@ -164,12 +165,16 @@ class Session{
 	private static function sendBlockLayers(BlockPosition $pos, World $world, Block $liquidLayer) : void{
 		if(method_exists(RuntimeBlockMapping::class, "sortByProtocol")){
 			foreach(RuntimeBlockMapping::sortByProtocol($world->getChunkPlayers($pos->getX() >> Chunk::COORD_BIT_SIZE, $pos->getZ() >> Chunk::COORD_BIT_SIZE)) as $mappingProtocol => $players){
+				/** @noinspection PhpUndefinedMethodInspection */
+				/** @noinspection PhpMethodParametersCountMismatchInspection */
 				Server::getInstance()->broadcastPackets($players, [
 					UpdateBlockPacket::create($pos, RuntimeBlockMapping::getInstance()->toRuntimeId(VersionInfo::BASE_VERSION[0] === "5" ? $liquidLayer->getStateId() : $liquidLayer->getFullId(), $mappingProtocol), UpdateBlockPacket::FLAG_NETWORK, UpdateBlockPacket::DATA_LAYER_LIQUID)
 				]);
 			}
 			return;
 		}
+		/** @noinspection PhpParamsInspection */
+		/** @noinspection PhpUndefinedMethodInspection */
 		Server::getInstance()->broadcastPackets($world->getChunkPlayers($pos->getX() >> Chunk::COORD_BIT_SIZE, $pos->getZ() >> Chunk::COORD_BIT_SIZE), [
 			UpdateBlockPacket::create($pos, RuntimeBlockMapping::getInstance()->toRuntimeId(VersionInfo::BASE_VERSION[0] === "5" ? $liquidLayer->getStateId() : $liquidLayer->getFullId()), UpdateBlockPacket::FLAG_NETWORK, UpdateBlockPacket::DATA_LAYER_LIQUID)
 		]);

@@ -2,7 +2,6 @@
 
 namespace DavyCraft648\Flashlight\item;
 
-use customiesdevs\customies\item\component\AllowOffHandComponent;
 use customiesdevs\customies\item\CreativeInventoryInfo;
 use customiesdevs\customies\item\ItemComponentsTrait;
 use pocketmine\item\ItemIdentifier;
@@ -13,7 +12,7 @@ class DeadFlashlight extends \pocketmine\item\Item implements \customiesdevs\cus
 	public function __construct(ItemIdentifier $identifier, string $name = "Unknown"){
 		parent::__construct($identifier, $name);
 		$this->initComponent("dead_flashlight", new CreativeInventoryInfo(CreativeInventoryInfo::CATEGORY_EQUIPMENT));
-		$this->addComponent(new AllowOffHandComponent(true));
+		$this->allowOffHand();
 	}
 
 	public function getMaxStackSize() : int{
